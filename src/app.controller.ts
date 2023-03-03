@@ -2,6 +2,7 @@ import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
@@ -29,6 +30,7 @@ export class AppController {
 
     console.log("Registration Request for User:")
     console.log(user);
+
     return this.authService.register(user);
   }
 

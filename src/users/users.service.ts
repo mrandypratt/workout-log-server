@@ -1,10 +1,5 @@
-import { Injectable } from '@nestjs/common';
-
-export type User = {
-  userId: number;
-  username: string;
-  password: string;
-};
+import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { User } from 'src/types/User';
 
 @Injectable()
 export class UsersService {
@@ -17,14 +12,15 @@ export class UsersService {
     },
     {
       userId: 2,
-      username: 'maria',
-      password: 'guess'
+      username: 'andy',
+      password: 'yaya'
     },
   ];
 
   async findOne(username: string): Promise<User | null> {
     console.log(`Checking for User: ${username}`)
-    return this.users.find(user => user.username === username) || null;
+    let user = this.users.find(user => user.username === username);
+    return user || null;
   }
 
   async createOne(username: string, password: string): Promise<User> {

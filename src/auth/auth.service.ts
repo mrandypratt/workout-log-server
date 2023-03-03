@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/types/User';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -16,7 +17,6 @@ export class AuthService {
       const { password, ...result } = user;
       return result;
     }
-
     return null;
   }
 
@@ -27,8 +27,23 @@ export class AuthService {
     };
   }
 
-  async register(user: any) {
+  async register(user: any): Promise<{}> {
     const payload = { username: user.username, sub: user.userId };
+
+    console.log("Checking if User Exists:")
+    let userInDB = await this.usersService.findOne(user.username)
+
+    if (userInDB) {
+      console.log("User Already Exists")
+      return {
+        userExists: true,
+      };
+    }
+
+    console.log("Adding User to Database:")
+    this.usersService.createOne(user.username, user.password)
+    
+    console.log("Sending JWT to User")
     return {
       access_token: this.jwtService.sign(payload),
     };
